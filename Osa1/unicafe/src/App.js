@@ -4,43 +4,37 @@ const Button = (props) => {
   return <button onClick={props.handleClick}>{props.text}</button>
 }
 
-const StatisticLine = (props) => {
-  if (props.text === "Positive")
-    return (
-      <>
-        {props.text}
-        &nbsp;
-        {props.value}
-        &nbsp; %
-        <br />
-      </>
-    )
-    
+const StaticsTable = (props) => {
+  const {good, neutral, bad} = props
+
   return (
-    <>
-      {props.text}
-      &nbsp;
-      {props.value}
-      <br />
-    </>
+    <table>
+      <tbody>
+        <StaticTableRow text='Good' value={good} />
+        <StaticTableRow text='Neutral' value={neutral} />
+        <StaticTableRow text='Bad' value={bad} />
+        <StaticTableRow text='All' value={good + neutral + bad} />
+        <StaticTableRow text='Average' value={(good - bad)/(bad + neutral + good)} />
+        <StaticTableRow text='Positive' value={(good / (bad + neutral + good))*100} />
+      </tbody>
+    </table>
   )
 }
 
-const Statistics = (props) => {
-  const {good, neutral, bad} = props
-
-  if (good > 0 || neutral > 0 || bad > 0){
-    return (
-      <div>
-          <StatisticLine text='Good' value={good} />
-          <StatisticLine text='Neutral' value={neutral} />
-          <StatisticLine text='Bad' value={bad} />
-          <StatisticLine text='All' value={good + neutral + bad} />
-          <StatisticLine text='Average' value={(good - bad)/(bad + neutral + good)} />
-          <StatisticLine text='Positive' value={(good / (bad + neutral + good))*100} />
-        </div>
-    )
-  }
+const StaticTableRow = (props) => {
+  if (props.text === "Positive")
+    return(
+      <tr>
+      <td>{props.text}</td>
+      <td>{props.value} %</td>
+    </tr>
+    ) 
+  return (
+    <tr>
+      <td>{props.text}</td>
+      <td>{props.value}</td>
+    </tr>
+  )
 }
 
 const App = () => {
@@ -68,7 +62,7 @@ const App = () => {
       <Button handleClick={setToBad} text="bad" />
       <br/>
       <h1>statistics</h1>
-      <Statistics good={good} neutral={neutral} bad={bad} />
+      <StaticsTable good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
