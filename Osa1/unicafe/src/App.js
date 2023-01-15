@@ -1,5 +1,48 @@
 import { useState } from "react"
 
+const Button = (props) => {
+  return <button onClick={props.handleClick}>{props.text}</button>
+}
+
+const StatisticLine = (props) => {
+  if (props.text === "Positive")
+    return (
+      <>
+        {props.text}
+        &nbsp;
+        {props.value}
+        &nbsp; %
+        <br />
+      </>
+    )
+    
+  return (
+    <>
+      {props.text}
+      &nbsp;
+      {props.value}
+      <br />
+    </>
+  )
+}
+
+const Statistics = (props) => {
+  const {good, neutral, bad} = props
+
+  if (good > 0 || neutral > 0 || bad > 0){
+    return (
+      <div>
+          <StatisticLine text='Good' value={good} />
+          <StatisticLine text='Neutral' value={neutral} />
+          <StatisticLine text='Bad' value={bad} />
+          <StatisticLine text='All' value={good + neutral + bad} />
+          <StatisticLine text='Average' value={(good - bad)/(bad + neutral + good)} />
+          <StatisticLine text='Positive' value={(good / (bad + neutral + good))*100} />
+        </div>
+    )
+  }
+}
+
 const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
@@ -25,20 +68,9 @@ const App = () => {
       <Button handleClick={setToBad} text="bad" />
       <br/>
       <h1>statistics</h1>
-      <div>
-        Good {good}<br/>
-        Neutral {neutral}<br/>
-        Bad {bad}<br/>
-        all {good + neutral + bad}<br/>
-        average {(good - bad)/(bad + neutral + good)}<br/>
-        positive {(good / (bad + neutral + good))*100} %
-      </div>
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
-}
-
-const Button = (props) => {
-  return <button onClick={props.handleClick}>{props.text}</button>
 }
 
 export default App
