@@ -44,14 +44,18 @@ const App = () => {
     // antaen sille paramitriksi olion response, joka sisältää kaiken oleellisen HTTP-pyynnön
     // vastaukseen liittyvän tiedon.
     // !!! Sille ei siis voi itse määrittää haluamaansa parametriä.
-    const personName = persons.find(person => person.id === id).name
-    if (window.confirm(`Delete ${personName} ?`))
+    const findResult = persons.find(person => person.id === id)
+    if (window.confirm(`Delete ${findResult.name} ?`))
     {
       personService
         .deletePerson(id)
         .then(response => {
           //console.log('Person deleted and setPersons call')
           setPersons(persons.filter(person => person.id !== id))
+        })
+        .catch(error => {
+          alert(`the person '${findResult.name}' was already deleted from server`)
+          setPersons(persons.filter(p => p.id !== findResult.id))
         })
     }
   }
@@ -66,7 +70,15 @@ const App = () => {
     if (!persons.find(element => {
       //console.log("Elemet.name: ", element.name)
       if (element.name === newName){
-        window.alert(`${newName} is already added to phonebook`)
+        if (window.confirm(`${newName} is already added to phonebook, replace old number with a new one?`)){
+          personService
+            .update(element.id, personObject)
+            .then(returnedPerson => {
+              setPersons(persons.map(p => p.id !== element.id ? p : returnedPerson))
+              setNewName('')
+              setNewNumber('')
+            })
+        }
         return true
       }
       else
