@@ -3,12 +3,14 @@ import PersonInput from "./PersonInput"
 import ShowPerson from './ShowPerson'
 import Filter from './Filter'
 import personService from './services/persons'
+import Notification from './notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [message, setMessage] = useState({text: '', isError: false})
 
   useEffect(() => {
     personService
@@ -52,10 +54,18 @@ const App = () => {
         .then(response => {
           //console.log('Person deleted and setPersons call')
           setPersons(persons.filter(person => person.id !== id))
+          setMessage({text: `${findResult.name} deleted`, isError: false})
+          setTimeout(() => {
+          setMessage({text: ``, isError: false})
+          }, 3000)
         })
         .catch(error => {
-          alert(`the person '${findResult.name}' was already deleted from server`)
+          //alert(`the person '${findResult.name}' was already deleted from server`)
           setPersons(persons.filter(p => p.id !== findResult.id))
+          setMessage({text: `the person ${findResult.name}  was already deleted from server`, isError: true})
+          setTimeout(() => {
+          setMessage({text: ``, isError: false})
+          }, 3000)
         })
     }
   }
@@ -90,6 +100,10 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
+        setMessage({text: `Added ${newName}`, isError: false})
+          setTimeout(() => {
+          setMessage({text: ``, isError: false})
+          }, 3000)
       })
   }
 
@@ -103,6 +117,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message.text} isError={message.isError} />
       <Filter newFilter={newFilter} handleFilterInputChange={handleFilterInputChange} />
       <PersonInput 
         newName={newName} 
