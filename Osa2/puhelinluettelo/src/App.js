@@ -88,6 +88,13 @@ const App = () => {
               setNewName('')
               setNewNumber('')
             })
+            .catch(error => {
+              setPersons(persons.filter(p => p.id !== element.id))
+              setMessage({text: `information ${newName} has already deleted from server`, isError: true})
+              setTimeout(() => {
+                setMessage({text: ``, isError: false})
+              }, 3000)
+            })
         }
         return true
       }
