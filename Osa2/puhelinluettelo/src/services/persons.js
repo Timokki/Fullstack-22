@@ -50,6 +50,11 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
+const deletePerson = (id) => {
+  const request = axios.delete(`${baseUrl}/${id}`)
+  return request.then(response => response.data)
+}
+
 // Olion nimet vastaavat exportattavien muuttujien nimiä. Tämän vuoksi olion
 // määrittely voidaan kirjoittaa lyhyemmin. Normaalimuoto olisi
 // export default {
@@ -57,4 +62,4 @@ const update = (id, newObject) => {
 // create: create,
 // update: update
 // }
-export default {getAll, create, update}
+export default {getAll, create, update, deletePerson}

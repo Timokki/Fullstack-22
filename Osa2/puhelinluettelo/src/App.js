@@ -16,7 +16,10 @@ const App = () => {
       .then(initialPersons => {
         setPersons(initialPersons)
       })
-  }, [])
+  }, []) // Tyhjä taulukko viimeisenä parametrinä merkitsee, että useEffect funktio
+  // kutsutaan vain kerran kun komponentti rendereoidaan ensimmäisen kerran.
+
+  //console.log(`render ${persons.length} persons`)
 
   const handleNameInputChange = (event) => {
     setNewName(event.target.value)
@@ -28,7 +31,29 @@ const App = () => {
 
   const handleFilterInputChange = (event) => {
     setNewFilter(event.target.value)
-    console.log(`Filtteröinti` + filttered(persons, newFilter))
+    //console.log(`Filtteröinti` + filttered(persons, newFilter))
+  }
+
+  const handleDeleteClick = (id) => {
+    //console.log('Delete: ', id)
+
+    // personService.deletePerson palauttaa promisen
+    // Kun haluamme promisea vastaavan operaation tuloksen, tulee promiselle
+    // rekisteröidä tapahtumankuuntelija. Tämä tapahtuu metodilla then.
+    // JS suoritusympäristö kutsuu then-metodin avulla rekisteröityä takaisinkutsufunktiota
+    // antaen sille paramitriksi olion response, joka sisältää kaiken oleellisen HTTP-pyynnön
+    // vastaukseen liittyvän tiedon.
+    // !!! Sille ei siis voi itse määrittää haluamaansa parametriä.
+    const personName = persons.find(person => person.id === id).name
+    if (window.confirm(`Delete ${personName} ?`))
+    {
+      personService
+        .deletePerson(id)
+        .then(response => {
+          //console.log('Person deleted and setPersons call')
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
   }
 
   const addNewName = (event) => {
@@ -74,7 +99,13 @@ const App = () => {
         handleNumberInputChahge={handleNumberInputChahge} 
         onClickHandle={addNewName}/>
       <h2>Numbers</h2>
-      {filttered(persons, newFilter).map(person => <ShowPerson key={person.name} person={person} />)}
+      {filttered(persons, newFilter).map(person => 
+        <ShowPerson 
+          key={person.name} 
+          person={person}  
+          onClickHandle={() => handleDeleteClick(person.id)}
+        />
+      )}
     </div>
   )
 

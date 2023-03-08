@@ -6,8 +6,7 @@ const PersonInput = (props) => {
   const onClickHandle = props.onClickHandle
 
   return  (
-    <form>
-          
+    <form>  
           <h2>add a new</h2>
           <div>name: <input value={newName} onChange={handleNameInputChange}/></div>
           <div>number: <input value={newNumber} onChange={handleNumberInputChahge} /></div>
