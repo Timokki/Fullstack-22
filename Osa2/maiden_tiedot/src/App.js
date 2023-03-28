@@ -28,6 +28,10 @@ const App = () => {
     setNewCountryFilter(event.target.value)
   }
 
+  const handleShowButtonClick = (commonName) => {
+    setNewCountryFilter(commonName)
+  }
+
   const filttered = (arr, countryFilter) =>{
     if (countryFilter !== '') {
       console.log(`Filtter is: ${countryFilter}`)
@@ -41,7 +45,7 @@ const App = () => {
       <Notification message={message.text} isError={message.isError} />
       find countries <input value={countryFilter} onChange={handleCountryInputChange}/>
       <div>
-        <ShowCountryList countries={filttered(countrys, countryFilter)} />   
+        <ShowCountryList countries={filttered(countrys, countryFilter)} onClickHandle={handleShowButtonClick}/>   
       </div>
     </div>
   )

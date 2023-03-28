@@ -1,7 +1,7 @@
 import ShowCountry from "./showCountry"
 import ShowCountryDetails from "./showCountryDetails"
 
-const ShowCountryList = ({countries}) => {
+const ShowCountryList = ({countries, onClickHandle}) => {
   if (countries.length === 1)
     return (
       <>
@@ -16,7 +16,7 @@ const ShowCountryList = ({countries}) => {
           <ShowCountry
             key={i}
             country={cntry}  
-            //onClickHandle={() => handleShowClick(cntry)}
+            onClickHandle={() => onClickHandle(cntry.name.common)}
           />
         )}
       </>
