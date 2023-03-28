@@ -16,7 +16,6 @@ const App = () => {
         setNewCountrys(initialCountries)
       })
       .catch(error => {
-        //alert(`the person '${findResult.name}' was already deleted from server`)
         setMessage({text: `Yhteyttä palvelimeen ei saada`, isError: true})
         setTimeout(() => {
         setMessage({text: ``, isError: false})
