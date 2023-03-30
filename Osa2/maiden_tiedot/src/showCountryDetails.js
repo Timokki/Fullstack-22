@@ -1,3 +1,6 @@
+import WeatherInfo from "./weatherInfo"
+import weatherService from "./services/weather"
+
 const ShowCountryDetails = ({country}) => {
   //console.log('Languages: ', country.languages)
   const langKeys = Object.keys(country.languages)
@@ -6,6 +9,10 @@ const ShowCountryDetails = ({country}) => {
     width: 150,
     height: 'auto'
   }
+
+  //weatherService.getWeather(country.capital)
+  //.then()
+  //console.log(`Weather data: ${currentWeather}`)
 
   return (
     <div>
@@ -17,7 +24,8 @@ const ShowCountryDetails = ({country}) => {
         {langKeys.map((key, i) => <li key={i}> {country.languages[key]} </li>)}
       </div>
       <br />
-      <img src={country.flags.png} alt={`flag of ${country.name.common}`} style={flagStyle}></img>
+      <img src={country.flags.png} alt={`flag of ${country.name.common}`} style={flagStyle} />
+      <WeatherInfo />
     </div>
   )
 }

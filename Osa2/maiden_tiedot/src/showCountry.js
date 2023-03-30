@@ -1,5 +1,5 @@
 const ShowCountry = (props) => {
-  console.log('ShowCountry props: ', props)
+  //console.log('ShowCountry props: ', props)
   return (
     <>
       {props.country.name.common} 
