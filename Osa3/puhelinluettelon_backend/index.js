@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 let persons = [
   {
     "id": 1,
@@ -46,6 +48,25 @@ app.get('/info', (req, res) => {
     ${Date(reqTime)}
     `
   )
+})
+
+app.post('/api/persons', (req,res) =>{
+  person = req.body
+  //console.log('body: ', person)
+  if (!person){
+    return res.status(400).json({
+      error: 'content missing'
+    })
+  }
+
+  const newPerson = {
+    name: person.name,
+    number: person.number,
+    id: (Math.random() * 20000).toFixed(0)
+  }
+
+  persons = persons.concat(newPerson)
+  res.json(newPerson)
 })
 
 app.delete('/api/persons/:id', (req, res) => {
