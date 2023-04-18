@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/persons'
+const baseUrl = '/api/persons' //'/api/persons'
 
 /*
   PersonServiceä on mukavampi käyttää kun HTTP-pyynnön vastauksen

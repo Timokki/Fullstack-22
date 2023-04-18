@@ -6,11 +6,16 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "@powershell Remove-Item -Recurse -Force build && cd ../../Osa2/puhelinluettelo && npm run build && @powershell Copy-Item build -Recurse ../../Osa3/puhelinluettelon_backend",
+    "deploy": "fly deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",    
+    "logs:prod": "fly logs"
   },
   "author": "Timo Keränen",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "morgan": "^1.10.0"
   },
