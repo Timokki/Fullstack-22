@@ -9,8 +9,6 @@ app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
 
-const persons = []
-
 morgan.token('body', req => {
   return JSON.stringify(req.body)
 } )
@@ -36,21 +34,23 @@ app.get('/api/persons/:id', (req, res) => {
 
 app.get('/info', (req, res) => {
   reqTime = Date.now()
-  res.send(
-    `Phonebook has info for ${persons.length} people
-    <br /><br />
-    ${Date(reqTime)}
-    `
-  )
+  Person.find({}).then(persons => {
+    res.send(
+      `Phonebook has info for ${persons.length} people
+      <br /><br />
+      ${Date(reqTime)}
+      `
+    )
+  })
 })
 
 app.post('/api/persons', (req,res) =>{
   const body = req.body
-  //console.log('body: ', person)
-  if (!person){return res.status(400).json({error: 'content missing'})}
-  if (person.name === ''){return res.status(400).json({error: 'name missing'})}
-  if (person.number === ''){return res.status(400).json({error: 'number missing'})} 
-  //if (persons.find(p => p.name === person.name)){return res.status(400).json({error: 'name must be unique'})}
+  console.log('body: ', body.name, body.number)
+  if (!body){return res.status(400).json({error: 'content missing'})}
+  if (body.name === ''){return res.status(400).json({error: 'name missing'})}
+  if (body.number === ''){return res.status(400).json({error: 'number missing'})} 
+  //if (persons.find(p => p.name === body.name)){return res.status(400).json({error: 'name must be unique'})}
   
   const person = new Person({
     name: body.name,
@@ -64,7 +64,7 @@ app.post('/api/persons', (req,res) =>{
 
 app.delete('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
-  persons = persons.filter(pers => pers.id !== id)
+  //persons = persons.filter(pers => pers.id !== id)
 
   res.status(204).end()
 })

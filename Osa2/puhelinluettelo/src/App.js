@@ -112,6 +112,12 @@ const App = () => {
           setMessage({text: ``, isError: false})
           }, 3000)
       })
+     .catch(error => {
+        setMessage({text: error.response.data.error, isError: true})
+          setTimeout(() => {
+            setMessage({text: ``, isError: false})
+          }, 3000)
+      })
   }
 
   const filttered = (arr, filter) =>{
