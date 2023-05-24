@@ -1,0 +1,18 @@
+@baseUrl = http://localhost:3001/api
+
+# @name createrecord
+POST {{baseUrl}}/persons HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Teppo Testaaja",
+  "number": "055 444 3321"
+}
+
+### GET /people/id
+@personId = {{createrecord.response.body.$.id}}
+GET {{baseUrl}}/persons/{{personId}}
+
+### DELETE /people/id
+DELETE {{baseUrl}}/persons/{{personId}}
+Content-Type: application/json

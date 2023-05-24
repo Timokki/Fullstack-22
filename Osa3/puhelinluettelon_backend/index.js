@@ -30,9 +30,8 @@ app.use(errorHandler) //muista pitää tämä viimeisenä middleware rekisteröi
 
 app.get('/api/persons', (req, res) => {
   Person.find({})
-  .then(persons => {res.json(persons)
+  .then(persons => {res.json(persons)})
   .catch(error => next(error))
-  })
 })
 
 app.get('/api/persons/:id', (req, res, next) => {
@@ -69,7 +68,10 @@ app.post('/api/persons', (req,res) =>{
   })
 
   person.save()
-  .then(savedPerson => {res.json(savedPerson)})
+  .then(savedPerson => {
+    res.json(savedPerson)
+    console.log('response.data:', savedPerson)
+  })
   .catch(error => next(error))
 })
 
