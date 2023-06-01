@@ -1,0 +1,13 @@
+node_modules
+localData.md
+
+# dependencies
+/modules
+/node_modules
+/.pnp
+.pnp.js
+.DS_Store
+.env
+
+# production ui
+/build
