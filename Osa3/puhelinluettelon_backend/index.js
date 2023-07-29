@@ -21,12 +21,17 @@ const errorHandler = (error, req, res, next) => {
 
   if (error.name === 'CastError') {
     return res.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    console.log("ErrorHandler Validation Error")
+    return res.status(400).json({error: error.message})
   }
 
   next(error)
 }
 
-app.use(errorHandler) //muista pitää tämä viimeisenä middleware rekisteröintinä
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: 'unknown endpoint' })
+}
 
 app.get('/api/persons', (req, res) => {
   Person.find({})
@@ -54,12 +59,12 @@ app.get('/info', (req, res) => {
   .catch(error => next(error))
 })
 
-app.post('/api/persons', (req,res) =>{
+app.post('/api/persons', (req,res,next) =>{
   const body = req.body
   console.log('body: ', body.name, body.number)
-  if (!body){return res.status(400).json({error: 'content missing'})}
-  if (body.name === ''){return res.status(400).json({error: 'name missing'})}
-  if (body.number === ''){return res.status(400).json({error: 'number missing'})} 
+  //if (!body){return res.status(400).json({error: 'content missing'})}
+  //if (body.name === ''){return res.status(400).json({error: 'name missing'})}
+  //if (body.number === ''){return res.status(400).json({error: 'number missing'})} 
   //if (persons.find(p => p.name === body.name)){return res.status(400).json({error: 'name must be unique'})}
   
   const person = new Person({
@@ -76,14 +81,12 @@ app.post('/api/persons', (req,res) =>{
 })
 
 app.put('/api/persons/:id', (req, res, next) =>{
-  const body = req.body
+  const {name, number} = req.body
 
-  const person = {
-    name: body.name,
-    number: body.number,
-  }
-
-  Person.findByIdAndUpdate(req.params.id, person, {new: true})
+  Person.findByIdAndUpdate(req.params.id, 
+    {name, number},
+    {new: true, runValidators: true, context: 'query'}
+  )
     .then(updatedPerson => {
       res.json(updatedPerson)
     })
@@ -95,6 +98,9 @@ app.delete('/api/persons/:id', (req, res, next) => {
     .then(result => {res.status(204).end()})
     .catch(error => next(error))
 })
+
+app.use(unknownEndpoint)
+app.use(errorHandler) //muista pitää tämä viimeisenä middleware rekisteröintinä
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {

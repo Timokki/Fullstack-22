@@ -114,6 +114,7 @@ const App = () => {
       })
      .catch(error => {
         setMessage({text: error.response.data.error, isError: true})
+          console.log('error: ', error.response.data)
           setTimeout(() => {
             setMessage({text: ``, isError: false})
           }, 3000)
