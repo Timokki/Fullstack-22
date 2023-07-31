@@ -1,0 +1,9 @@
+node_modules
+localData.md
+
+# dependencies
+/node_modules
+.env
+
+# production ui
+/build
