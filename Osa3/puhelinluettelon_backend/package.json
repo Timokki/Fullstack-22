@@ -10,7 +10,8 @@
     "build:ui": "@powershell Remove-Item -Recurse -Force build && cd ../../Osa2/puhelinluettelo && npm run build && @powershell Copy-Item build -Recurse ../../Osa3/puhelinluettelon_backend",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
-    "logs:prod": "fly logs"
+    "logs:prod": "fly logs",
+    "lint": "eslint ."
   },
   "author": "Timo Keränen",
   "license": "MIT",
@@ -22,6 +23,9 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "eslint": "^8.46.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.28.0",
+    "nodemon": "^3.0.1"
   }
 }
